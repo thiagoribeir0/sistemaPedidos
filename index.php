@@ -1,4 +1,5 @@
 <?php
+
 include('conexao.php');
 
 if(isset($_POST['email']) || isset($_POST['senha'])) {
@@ -59,6 +60,11 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
         </p>
         <p>
             <button type="submit">Entrar</button>
+        </p>
+    </form>
+    <form action="cadastro.php" method="GET">
+        <p>
+            <button type="submit">Cadastrar</button>
         </p>
     </form>
 </body>
