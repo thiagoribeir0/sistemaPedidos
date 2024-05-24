@@ -58,5 +58,8 @@ function exibirProdutos() {
 
         exibirProdutos();
 
+    echo "<p>";
+    echo "<a href='painel.php'>Voltar</a>";
+    echo "</p>";
 
 ?>

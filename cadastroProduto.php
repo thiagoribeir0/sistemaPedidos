@@ -47,5 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" value="Cadastrar Produto">
         </p>
 
+        <p>
+        <a href="painel.php">Voltar</a>
+        </p>
+
 </body>
 </html>
