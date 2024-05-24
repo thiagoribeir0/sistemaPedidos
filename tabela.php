@@ -1,5 +1,6 @@
 <?php
 include('conexao.php');
+include('protect.php');
 
 $selectProdutos = "SELECT * FROM produtos";
 $sql_query = $mysqli->query($selectProdutos) or die("Falha na execução do código SQL: " . $mysqli->error);

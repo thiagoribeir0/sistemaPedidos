@@ -1,6 +1,7 @@
 <?php
 
 include('conexao.php');
+include('protect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nomeProduto = $_POST["nomeProduto"];
@@ -8,6 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $valor = $_POST["valor"];
     $sql_insert = "INSERT INTO produtos(nomeProduto,quantidade,valor) VALUES ('$nomeProduto', '$quantidade', '$valor')";
     $sql_query = $mysqli->query($sql_insert) or die("Falha na execução do código SQL: " . $mysqli->error);
+
+    header("Location: painel.php");
+    exit();
+
 }
 
 ?>
@@ -22,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h1>Sistema de Cadastro de produtos</h1>
 
-    <form action="cadastroProduto.php" method="post">
+    <form action="" method="POST">
         <p>
             <label>Nome do produto:</label>
             <input type="text" name="nomeProduto">
@@ -41,13 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>
             <input type="submit" value="Cadastrar Produto">
         </p>
-
-        <?php
-        $mysqli->close();
-
-        header("Location: painel.php");
-        exit();
-        ?>
 
 </body>
 </html>
