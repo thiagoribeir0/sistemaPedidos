@@ -1,5 +1,6 @@
 <?php
 
+include('conexao.php');
 include('protect.php');
 
 ?>
@@ -14,6 +15,18 @@ include('protect.php');
 <body>
 
     Bem-vindo ao painel geral, <?php echo $_SESSION['nome']; ?>.
+
+    <form action="cadastroProduto.php" method="GET">
+        <p>
+            <button type="submit">Cadastrar Produto</button>
+        </p>
+    </form>
+
+    <form action="tabela.php" method="GET">
+        <p>
+            <button type="submit">Visualizar Produto</button>
+        </p>
+    </form>
 
     <p>
         <a href="logout.php">Sair</a>

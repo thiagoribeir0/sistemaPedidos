@@ -30,6 +30,7 @@ function exibirProdutos() {
     }
 }
 
-$connection->close();
+        exibirProdutos();
+
 
 ?>
