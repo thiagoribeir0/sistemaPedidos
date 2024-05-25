@@ -10,17 +10,18 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
         echo "Preencha sua senha.";
     } else {
 
-        $email = $mysqli->real_escape_string($_POST['email']);
-        $senha = $mysqli->real_escape_string($_POST['senha']);
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
 
-        $sql_code = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
-        $sql_query = $mysqli->query($sql_code) or die("Falha na execução do código SQL: " . $mysqli->error);
-
-        $quantidade = $sql_query->num_rows;
+        $stmt = $mysqli->prepare("SELECT * FROM usuarios WHERE email = ? AND senha = ?");
+        $stmt->bind_param("ss", $email, $senha);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $quantidade = $result->num_rows;
 
         if($quantidade == 1) {
 
-            $usuario = $sql_query->fetch_assoc();
+            $usuario = $result->fetch_assoc();
 
             if(!isset($_SESSION)) {
                 session_start();
@@ -35,8 +36,9 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
             echo "Falha ao logar! E-mail ou senha incorretos.";
         }
 
-    }
+        $stmt->close();
 
+    }
 }
 ?>
 

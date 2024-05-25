@@ -6,15 +6,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $senha = $_POST['senha'];
-    $sql_insert = "INSERT INTO usuarios(nome,email,senha) VALUES ('$nome', '$email', '$senha')";
-    $sql_query = $mysqli->query($sql_insert) or die("Falha na execução do código SQL: " . $mysqli->error);
 
-    if ($sql_query === TRUE) {
+    $stmt = $mysqli->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nome, $email, $senha);
+
+    if ($stmt->execute()) {
         echo "Usuário cadastrado com sucesso!";
     } else {
-        echo "Erro ao cadastrar o usuário: " . $mysqli->error;
+        echo "Erro ao cadastrar o usuário: " . $stmt->error;
     }
 
+    $stmt->close();
     $mysqli->close();
 
     header("Location: index.php");
