@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $message = "Usuário cadastrado com sucesso!";
             echo "<script type='text/javascript'>alert('$message');</script>";
-            echo "<script type='text/javascript'>setTimeout(function() { window.location.href = 'index.php'; }, 2000);</script>";
+            echo "<script type='text/javascript'>setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
             exit();
         }
     } catch (mysqli_sql_exception $e) {
