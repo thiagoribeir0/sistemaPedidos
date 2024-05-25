@@ -13,23 +13,6 @@ include('protect.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Geral</title>
     <link rel="stylesheet" type="text/css" href="estilo.css">
-    <style>
-        html,
-        body {
-            height: 100%;
-        }
-
-        .container {
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card {
-            width: 300px;
-        }
-    </style>
 </head>
 
 <body>
@@ -62,7 +45,6 @@ include('protect.php');
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <form action="tabela.php" method="GET">
                         <div class="card-body">
                             <h5 class="card-title">Visualizar produtos</h5>
                             <p class="card-text">Clique no botão abaixo para visualizar os produtos cadastrados.</p>
