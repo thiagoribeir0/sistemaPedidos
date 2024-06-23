@@ -2,40 +2,41 @@
 
 include('conexao.php');
 
-if (isset($_POST['email']) || isset($_POST['senha'])) {
-
-    if (strlen($_POST['email']) == 0) {
+if (isset($_POST['email']) || isset($_POST['senha'])) { // verifica se os campos email ou senha foram enviados via método POST - isset: verifica se a variável foi definida e não é nula
+    if (strlen($_POST['email']) == 0) { // verifica se o campo email está vazio - strlen: retorna o comprimento de uma string
         echo "Preencha seu e-mail.";
-    } else if (strlen($_POST['senha']) == 0) {
+    } else if (strlen($_POST['senha']) == 0) { // verifica se o campo senha está vazio 
         echo "Preencha sua senha.";
     } else {
 
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
+        // atribuição de variáveis
+        $email = $_POST['email']; // atribui o valor enviado no formulário para a variável email
+        $senha = $_POST['senha']; // atribui o valor enviado no formulário para a variável senha
 
-        $stmt = $mysqli->prepare("SELECT * FROM usuarios WHERE email = ? AND senha = ?");
-        $stmt->bind_param("ss", $email, $senha);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $quantidade = $result->num_rows; //num_rows
+        // preparação da consulta 
+        $stmt = $mysqli->prepare("SELECT * FROM usuarios WHERE email = ? AND senha = ?"); // prepara a consulta para selecionar todos os campos da tabela 'usuarios' onde o email corresponde ao valor fornecido
+        $stmt->bind_param("ss", $email, $senha); // vincula o parâmetro $email à consulta; 's' indica que o tipo do parâmetro é string
+        $stmt->execute(); // executa a instrução preparada
+        $result = $stmt->get_result(); // obtém o resultado da consulta
+        $quantidade = $result->num_rows; // obtém o número de linhas retornadas pela consulta
 
-        if ($quantidade == 1) {
+        if ($quantidade == 1) { // se exatamente um usuário foi encontrado com o email e senha fornecidos
 
-            $usuario = $result->fetch_assoc(); //estudar fetch_assoc
+            $usuario = $result->fetch_assoc(); // obtém os dados do usuário como um array associativo
 
             if (!isset($_SESSION)) {
-                session_start();
+                session_start(); // inicia uma nova sessão, se ainda não foi iniciada
             }
 
-            $_SESSION['id'] = $usuario['id'];
-            $_SESSION['nome'] = $usuario['nome'];
+            $_SESSION['id'] = $usuario['id']; // armazena o ID do usuário na sessão
+            $_SESSION['nome'] = $usuario['nome']; // armazena o nome na sessão
 
-            header("Location: painel.php");
+            header("Location: painel.php"); // redireciona o usuário autenticado para o painel
         } else {
-            echo "<script>alert('Falha ao logar! E-mail ou senha incorretos.');</script>";
+            echo "<script>alert('Falha ao logar! E-mail ou senha incorretos.');</script>"; // exibe uma mensagem de erro se o email ou senha estiverem incorretos
         }
 
-        $stmt->close();
+        $stmt->close(); // fecha a instrução preparada
     }
 }
 ?>

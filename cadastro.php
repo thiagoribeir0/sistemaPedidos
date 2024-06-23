@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $mysqli->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $nome, $email, $senha);
 
-    try {
+    try { 
         if ($stmt->execute()) {
             $message = "Usuário cadastrado com sucesso!";
             echo "<script type='text/javascript'>alert('$message');</script>";
@@ -52,7 +52,7 @@ $mysqli->close();
             <div class="card-body">
                 <h5 class="card-title text-center">Cadastre seu usuário</h5>
                 <br>
-                <form action="cadastro.php" method="POST">
+                <form action="cadastro.php" method="POST" onsubmit="return validarSenha()">
                     <div class="mb-3">
                         <label for="inputNome" class="form-label">Nome</label>
                         <input type="text" class="form-control" name="nome" id="inputNome">
@@ -76,6 +76,37 @@ $mysqli->close();
             </div>
         </div>
     </div>
+
+    <script>
+        function validarSenha() {
+            var senha = document.getElementById("inputPassword4").value;
+
+            if (senha.length < 8) {
+                alert("A senha deve ter pelo menos 8 caracteres.");
+                return false;
+            }
+
+            var maiuscula = /[A-Z]/.test(password);
+            if (!maiuscula) {
+                alert("A senha deve conter pelo menos uma letra maiúscula.");
+                return false;
+            }
+
+            var digito = /\d/.test(password);
+            if (!digito) {
+                alert("A senha deve conter pelo menos um número.");
+                return false;
+            }
+
+            var caractere = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+            if (!caractere) {
+                alert("A senha deve conter pelo menos um caractere especial.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 
 </html>

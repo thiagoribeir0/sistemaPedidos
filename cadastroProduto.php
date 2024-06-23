@@ -1,27 +1,28 @@
 <?php
 
-include('conexao.php');
-include('protect.php');
+include('conexao.php'); // inclui o arquivo de conexão com o banco de dados
+include('protect.php'); // inclui o arquivo de proteção
 
-$message = "";
+$message = ""; // inicializa a variável de mensagem
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // verifica se a requisição foi feita através do método POST
+    // obtém os dados do formulário usando $_POST
     $nomeProduto = $_POST["nomeProduto"];
     $quantidade = $_POST["quantidade"];
     $valor = $_POST["valor"];
-    $sql_insert = "INSERT INTO produtos(nomeProduto,quantidade,valor) VALUES ('$nomeProduto', '$quantidade', '$valor')";
+    $sql_insert = "INSERT INTO produtos(nomeProduto,quantidade,valor) VALUES ('$nomeProduto', '$quantidade', '$valor')"; // constrói a consulta SQL para inserir os dados do produto na tabela 'produtos'
     
-    try {
-        if ($mysqli->query($sql_insert) === TRUE) {
+    try { // executa a consulta SQL e verifica se a inserção foi bem-sucedida
+        if ($mysqli->query($sql_insert) === TRUE) { // se a inserção for bem-sucedida, exibe uma mensagem de sucesso
             $message = "Produto cadastrado com sucesso!";
             echo "<script type='text/javascript'>alert('$message');</script>";
-            echo "<script type='text/javascript'>setTimeout(function() { window.location.href = 'painel.php'; }, 1000);</script>";
-            exit();
-        } else {
+            echo "<script type='text/javascript'>setTimeout(function() { window.location.href = 'painel.php'; }, 1000);</script>"; // redireciona o usuário para a página 'painel.php' após 1 segundo
+            exit(); // termina o script para garantir que o redirecionamento ocorra
+        } else { // se ocorrer um erro durante a inserção, exibe uma mensagem de erro
             $message = "Erro ao cadastrar o produto: " . $mysqli->error;
             echo "<script type='text/javascript'>alert('$message');</script>";
         }
-    } catch (mysqli_sql_exception $e) {
+    } catch (mysqli_sql_exception $e) { // se ocorrer uma exceção, exibe uma mensagem de erro
         $message = "Erro ao cadastrar o produto: " . $e->getMessage();
         echo "<script type='text/javascript'>alert('$message');</script>";
     }

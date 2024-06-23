@@ -22,7 +22,7 @@ include('protect.php');
     <header>
         <nav>
             <div>
-                Bem-vindo ao painel geral, <?php echo $_SESSION['nome']; ?>.
+                Bem-vindo ao painel geral, <strong><?php echo $_SESSION['nome']; ?></strong>.
             </div>
 
             <form action="logout.php" method="POST">

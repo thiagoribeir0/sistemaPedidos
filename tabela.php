@@ -13,16 +13,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $valor = $_POST["valor"];
 
             $sql_update = "UPDATE produtos SET nomeProduto='$nomeProduto', quantidade='$quantidade', valor='$valor' WHERE id='$produto_id'";
-            $mysqli->query($sql_update) or die("Falha na execução do código SQL: " . $mysqli->error);
+
+            if ($mysqli->query($sql_update)) {
+                echo "<script>alert('Produto atualizado com sucesso.'); window.location.href = 'tabela.php';</script>";
+            } else {
+                echo "<script>alert('Falha na execução do código SQL: " . $mysqli->error . "'); window.location.href = 'tabela.php';</script>";
+            } 
+        
         } elseif ($action == "delete") {
             $sql_delete = "DELETE FROM produtos WHERE id='$produto_id'";
-            $mysqli->query($sql_delete) or die("Falha na execução do código SQL: " . $mysqli->error);
+
+            if ($mysqli->query($sql_delete)) {
+                echo "<script>alert('Produto deletado com sucesso.'); window.location.href = 'tabela.php';</script>";
+            } else {
+                echo "<script>alert('Falha na execução do código SQL: " . $mysqli->error . "'); window.location.href = 'tabela.php';</script>";
+            }
         }
     }
 }
 
 $selectProdutos = "SELECT * FROM produtos";
 $sql_query = $mysqli->query($selectProdutos) or die("Falha na execução do código SQL: " . $mysqli->error);
+
 ?>
 
 <!DOCTYPE html>
@@ -37,9 +49,6 @@ $sql_query = $mysqli->query($selectProdutos) or die("Falha na execução do cód
 
 <body>
 
-</body>
-
-</html>
 <div class="container">
     <br>
     <h2>Lista de produtos</h2>
@@ -58,15 +67,16 @@ $sql_query = $mysqli->query($selectProdutos) or die("Falha na execução do cód
             if ($sql_query->num_rows > 0) {
                 while ($row = $sql_query->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<form method='post'>";
+                    echo "<form method='post' action='tabela.php'>";
                     echo "<td><input type='text' class='form-control' name='nomeProduto' value='" . $row['nomeProduto'] . "'></td>";
                     echo "<td><input type='text' class='form-control' name='quantidade' value='" . $row['quantidade'] . "'></td>";
                     echo "<td><input type='text' class='form-control' name='valor' value='" . $row['valor'] . "'></td>";
-                    echo "<td>
-                                <input type='hidden' name='produto_id' value='" . $row['id'] . "'>
-                                <button type='submit' name='action' value='update' class='btn btn-primary'>Salvar alterações</button>
-                                <button type='submit' name='action' value='delete' class='btn btn-danger'>Deletar</button>
-                              </td>";
+                    echo "<td>";
+                    echo "<input type='hidden' name='produto_id' value='" . $row['id'] . "'>";
+                    echo "<button type='button' onclick='confirmarUpdate(this.form)' class='btn btn-primary'>Salvar alterações</button>";
+                    echo "&nbsp;";
+                    echo "<button type='button' onclick='confirmarDelete(this.form)' class='btn btn-danger'>Deletar</button>";
+                    echo "</td>";
                     echo "</form>";
                     echo "</tr>";
                 }
@@ -78,6 +88,32 @@ $sql_query = $mysqli->query($selectProdutos) or die("Falha na execução do cód
     </table>
     <p><a href='painel.php' class='btn btn-secondary'>Voltar</a></p>
 </div>
+
+<!-- JavaScript para confirmar ações -->
+<script>
+
+    function confirmarUpdate(form) {
+        let inputAction = document.createElement('input');
+        inputAction.type = 'hidden';
+        inputAction.name = 'action';
+        inputAction.value = 'update';
+        form.appendChild(inputAction);
+        form.submit();
+    }
+
+
+    function confirmarDelete(form) {
+        if (confirm("Tem certeza que deseja deletar este produto?")) {
+            let inputAction = document.createElement('input');
+            inputAction.type = 'hidden';
+            inputAction.name = 'action';
+            inputAction.value = 'delete';
+            form.appendChild(inputAction);
+            form.submit();
+        }
+    }
+</script>
+
 </body>
 
 </html>
